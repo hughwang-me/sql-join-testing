@@ -103,7 +103,7 @@ public class UserService{
         Map<String , Object> map = new HashMap<>();
         map.put("name" , "王");
         map.put("sex" , "女");
-//        map.put("relationship" , "父");
+        map.put("relationship" , "父");
 
         List<UserFull> users1 = userMapper2.list(map);
         log.warn("不分页总数:{}" , users1.size());
