@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.com.sqljointesting.dao.FamilyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.com.sqljointesting.entity.FamilyInfo">
+    <!--@mbg.generated-->
+    <!--@Table JOIN_TEST_FAMILY_INFO-->
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="NUMBER" jdbcType="VARCHAR" property="number" />
+    <result column="RELATIONSHIP" jdbcType="VARCHAR" property="relationship" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    ID, "NAME", "NUMBER", RELATIONSHIP
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from JOIN_TEST_FAMILY_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    <!--@mbg.generated-->
+    delete from JOIN_TEST_FAMILY_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.com.sqljointesting.entity.FamilyInfo" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into JOIN_TEST_FAMILY_INFO ("NAME", "NUMBER", RELATIONSHIP
+      )
+    values (#{name,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{relationship,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.com.sqljointesting.entity.FamilyInfo" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into JOIN_TEST_FAMILY_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        "NAME",
+      </if>
+      <if test="number != null">
+        "NUMBER",
+      </if>
+      <if test="relationship != null">
+        RELATIONSHIP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="relationship != null">
+        #{relationship,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.com.sqljointesting.entity.FamilyInfo">
+    <!--@mbg.generated-->
+    update JOIN_TEST_FAMILY_INFO
+    <set>
+      <if test="name != null">
+        "NAME" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        "NUMBER" = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="relationship != null">
+        RELATIONSHIP = #{relationship,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.com.sqljointesting.entity.FamilyInfo">
+    <!--@mbg.generated-->
+    update JOIN_TEST_FAMILY_INFO
+    set "NAME" = #{name,jdbcType=VARCHAR},
+      "NUMBER" = #{number,jdbcType=VARCHAR},
+      RELATIONSHIP = #{relationship,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

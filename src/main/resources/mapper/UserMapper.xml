@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.com.sqljointesting.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.com.sqljointesting.entity.User">
+    <!--@mbg.generated-->
+    <!--@Table JOIN_TEST_USER-->
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="NUMBER" jdbcType="VARCHAR" property="number" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    ID, "NAME", SEX, "NUMBER", ADDRESS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from JOIN_TEST_USER
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    <!--@mbg.generated-->
+    delete from JOIN_TEST_USER
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.com.sqljointesting.entity.User" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into JOIN_TEST_USER ("NAME", SEX, "NUMBER",
+      ADDRESS)
+    values (#{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.com.sqljointesting.entity.User" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into JOIN_TEST_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        "NAME",
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="number != null">
+        "NUMBER",
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.com.sqljointesting.entity.User">
+    <!--@mbg.generated-->
+    update JOIN_TEST_USER
+    <set>
+      <if test="name != null">
+        "NAME" = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        "NUMBER" = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.com.sqljointesting.entity.User">
+    <!--@mbg.generated-->
+    update JOIN_TEST_USER
+    set "NAME" = #{name,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      "NUMBER" = #{number,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+
+  <resultMap id="UserFullMap" type="com.com.sqljointesting.entity.UserFull">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="NUMBER" jdbcType="VARCHAR" property="number" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <association property="postInfo" javaType="com.com.sqljointesting.entity.PostInfo">
+      <id column="P_ID" jdbcType="DECIMAL" property="id" />
+      <result column="POST_NAME" jdbcType="VARCHAR" property="postName" />
+      <result column="TITLE" jdbcType="VARCHAR" property="title" />
+      <result column="P_NUMBER" jdbcType="VARCHAR" property="number" />
+    </association>
+    <collection property="familyInfos" ofType="com.com.sqljointesting.entity.FamilyInfo">
+      <id column="F_ID" jdbcType="DECIMAL" property="id" />
+      <result column="F_NAME" jdbcType="VARCHAR" property="name" />
+      <result column="F_NUMBER" jdbcType="VARCHAR" property="number" />
+      <result column="RELATIONSHIP" jdbcType="VARCHAR" property="relationship" />
+    </collection>
+  </resultMap>
+
+  <sql id="listField">
+    JOIN_TEST_USER.ID,
+    JOIN_TEST_USER.NAME,
+    JOIN_TEST_USER.SEX,
+    JOIN_TEST_USER."NUMBER",
+    JOIN_TEST_USER.ADDRESS,
+
+    JOIN_TEST_POST_INFO.ID AS P_ID,
+    JOIN_TEST_POST_INFO.POST_NAME,
+    JOIN_TEST_POST_INFO.TITLE,
+    JOIN_TEST_POST_INFO."NUMBER" AS P_NUMBER,
+
+    JOIN_TEST_FAMILY_INFO.ID AS F_ID,
+    JOIN_TEST_FAMILY_INFO.NAME AS F_NAME,
+    JOIN_TEST_FAMILY_INFO."NUMBER" AS F_NUMBER,
+    JOIN_TEST_FAMILY_INFO.RELATIONSHIP
+
+
+  </sql>
+
+  <select id="list" parameterType="java.util.Map" resultMap="UserFullMap">
+    select
+    <include refid="listField">
+    </include>
+    from JOIN_TEST_USER
+    LEFT JOIN JOIN_TEST_POST_INFO ON JOIN_TEST_USER."NUMBER" = JOIN_TEST_POST_INFO."NUMBER"
+    LEFT JOIN JOIN_TEST_FAMILY_INFO ON JOIN_TEST_USER."NUMBER" = JOIN_TEST_FAMILY_INFO."NUMBER"
+    <where>
+      <if test="name != null">
+       and JOIN_TEST_USER."NAME" like concat('%' , concat(#{name,jdbcType=VARCHAR} , '%'))
+      </if>
+      <if test="sex != null">
+        and JOIN_TEST_USER.SEX = #{sex,jdbcType=VARCHAR}
+      </if>
+      <if test="number != null">
+        and JOIN_TEST_USER."NUMBER" = #{number,jdbcType=VARCHAR}
+      </if>
+      <if test="address != null">
+        and JOIN_TEST_USER.ADDRESS = #{address,jdbcType=VARCHAR}
+      </if>
+    </where>
+    ORDER BY JOIN_TEST_USER.ID
+  </select>
+</mapper>

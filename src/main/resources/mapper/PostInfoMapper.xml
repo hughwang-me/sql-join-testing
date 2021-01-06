@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.com.sqljointesting.dao.PostInfoMapper">
+  <resultMap id="BaseResultMap" type="com.com.sqljointesting.entity.PostInfo">
+    <!--@mbg.generated-->
+    <!--@Table JOIN_TEST_POST_INFO-->
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="POST_NAME" jdbcType="VARCHAR" property="postName" />
+    <result column="TITLE" jdbcType="VARCHAR" property="title" />
+    <result column="NUMBER" jdbcType="VARCHAR" property="number" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    ID, POST_NAME, TITLE, "NUMBER"
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from JOIN_TEST_POST_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    <!--@mbg.generated-->
+    delete from JOIN_TEST_POST_INFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.com.sqljointesting.entity.PostInfo" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into JOIN_TEST_POST_INFO (POST_NAME, TITLE, "NUMBER"
+      )
+    values (#{postName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.com.sqljointesting.entity.PostInfo" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into JOIN_TEST_POST_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="postName != null">
+        POST_NAME,
+      </if>
+      <if test="title != null">
+        TITLE,
+      </if>
+      <if test="number != null">
+        "NUMBER",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="postName != null">
+        #{postName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.com.sqljointesting.entity.PostInfo">
+    <!--@mbg.generated-->
+    update JOIN_TEST_POST_INFO
+    <set>
+      <if test="postName != null">
+        POST_NAME = #{postName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        "NUMBER" = #{number,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.com.sqljointesting.entity.PostInfo">
+    <!--@mbg.generated-->
+    update JOIN_TEST_POST_INFO
+    set POST_NAME = #{postName,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      "NUMBER" = #{number,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

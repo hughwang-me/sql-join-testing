@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.com.sqljointesting.dao.UserMapper2">
+  <resultMap id="BaseResultMap" type="com.com.sqljointesting.entity.User">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="NUMBER" jdbcType="VARCHAR" property="number" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+  </resultMap>
+
+  <resultMap id="UserFullMap" type="com.com.sqljointesting.entity.UserFull">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="NUMBER" jdbcType="VARCHAR" property="number" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <association property="postInfo" javaType="com.com.sqljointesting.entity.PostInfo">
+      <id column="P_ID" jdbcType="DECIMAL" property="id" />
+      <result column="POST_NAME" jdbcType="VARCHAR" property="postName" />
+      <result column="TITLE" jdbcType="VARCHAR" property="title" />
+      <result column="P_NUMBER" jdbcType="VARCHAR" property="number" />
+    </association>
+    <collection property="familyInfos"
+                ofType="com.com.sqljointesting.entity.FamilyInfo"
+                select="query4FamilyInfo"
+                column="{number4Query=number,relationship4Query=relationship}">
+    </collection>
+  </resultMap>
+
+  <sql id="listField">
+    JOIN_TEST_USER.ID,
+    JOIN_TEST_USER.NAME,
+    JOIN_TEST_USER.SEX,
+    JOIN_TEST_USER."NUMBER",
+    JOIN_TEST_USER.ADDRESS,
+
+    JOIN_TEST_POST_INFO.ID AS P_ID,
+    JOIN_TEST_POST_INFO.POST_NAME,
+    JOIN_TEST_POST_INFO.TITLE,
+    JOIN_TEST_POST_INFO."NUMBER" AS P_NUMBER,
+     NVL(#{relationship,jdbcType=VARCHAR} , '')   AS relationship
+  </sql>
+
+  <select id="list" parameterType="java.util.Map" resultMap="UserFullMap">
+    select
+    <include refid="listField">
+    </include>
+    from JOIN_TEST_USER LEFT JOIN JOIN_TEST_POST_INFO ON JOIN_TEST_USER."NUMBER" = JOIN_TEST_POST_INFO."NUMBER"
+    <where>
+      <if test="name != null">
+       and JOIN_TEST_USER."NAME" like concat('%' , concat(#{name,jdbcType=VARCHAR} , '%'))
+      </if>
+      <if test="sex != null">
+        and JOIN_TEST_USER.SEX = #{sex,jdbcType=VARCHAR}
+      </if>
+      <if test="number != null">
+        and JOIN_TEST_USER."NUMBER" = #{number,jdbcType=VARCHAR}
+      </if>
+      <if test="address != null">
+        and JOIN_TEST_USER.ADDRESS = #{address,jdbcType=VARCHAR}
+      </if>
+    </where>
+    ORDER BY JOIN_TEST_USER.ID
+  </select>
+
+  <select id="query4FamilyInfo" parameterType="java.util.Map" resultType="com.com.sqljointesting.entity.FamilyInfo">
+    select *
+    from JOIN_TEST_FAMILY_INFO
+    <where>
+      <if test="number4Query != null">
+        and JOIN_TEST_FAMILY_INFO."NUMBER" = #{number4Query,jdbcType=VARCHAR}
+      </if>
+      <if test="relationship4Query != null">
+        and JOIN_TEST_FAMILY_INFO."RELATIONSHIP" like concat('%' , concat(#{relationship4Query,jdbcType=VARCHAR} , '%'))
+      </if>
+    </where>
+  </select>
+</mapper>

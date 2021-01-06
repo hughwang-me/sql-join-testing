@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: prod
+#»’÷æ≈‰÷√
+logging:
+  level:
+    root: info
+    com.com.sqljointesting.dao: debug
+    org.mybatis.spring: debug
